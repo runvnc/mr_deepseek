@@ -16,7 +16,7 @@ def concat_text_lists(message):
     # then we need to concatenate the list into a single string
     out_str = ""
     if isinstance(message['content'], str):
-        return message['content']
+        return message
     else:
         for item in message['content']:
             if isinstance(item, str):
