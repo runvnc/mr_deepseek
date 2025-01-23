@@ -21,7 +21,6 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
         stream = await client.chat.completions.create(
             model=model_name,
             messages=messages,
-            response_format= { "type": "json_object" },
             stream=True,
             temperature=temperature,
             max_tokens=max_tokens
