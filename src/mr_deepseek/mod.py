@@ -32,9 +32,9 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
             done_reasoning = False
 
             async for chunk in original_stream:
-                if os.environ.get('AH_DEBUG') == 'True':
-                    print('\033[93m' + str(chunk) + '\033[0m', end='')
-                    print('\033[92m' + str(chunk.choices[0].delta.content) + '\033[0m', end='')
+                #if os.environ.get('AH_DEBUG') == 'True':
+                #    #print('\033[93m' + str(chunk) + '\033[0m', end='')
+                #    #print('\033[92m' + str(chunk.choices[0].delta.content) + '\033[0m', end='')
                 if chunk.choices[0].delta.reasoning_content:
                     #yield chunk.choices[0].delta.reasoning_content
                     print('\033[92m' + str(chunk.choices[0].delta.reasoning_content) + '\033[0m', end='')
