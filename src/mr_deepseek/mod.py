@@ -46,7 +46,7 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
                     print('\033[92m' + str(chunk.choices[0].delta.reasoning_content) + '\033[0m', end='')
                 elif chunk.choices[0].delta.content:
                     if not done_reasoning:
-                        yield '"}]'
+                        yield '"}] <<CUT_HERE>>'
                         done_reasoning = True
                     yield chunk.choices[0].delta.content or ""
 
