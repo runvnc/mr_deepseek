@@ -27,8 +27,10 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
         )
 
         print("Opened stream with model:", model_name)
-        done_reasoning = False
+
         async def content_stream(original_stream):
+            done_reasoning = False
+
             async for chunk in original_stream:
                 if os.environ.get('AH_DEBUG') == 'True':
                     print('\033[93m' + str(chunk) + '\033[0m', end='')
