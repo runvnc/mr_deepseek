@@ -10,6 +10,22 @@ client = AsyncOpenAI(
     base_url="https://api.deepseek.com"
 )
 
+def concat_text_lists(message):
+    """Concatenate text lists into a single string"""
+    # if the message['content'] is a list
+    # then we need to concatenate the list into a single string
+    out_str = ""
+    if isinstance(message['content'], str):
+        return message['content']
+    else:
+        for item in message['content']:
+            if isinstance(item, str):
+                out_str += item + "\n"
+            else:
+                out_str += item['text'] + "\n"
+    message.update({'content': out_str})
+    return message
+
 @service()
 async def stream_chat(model, messages=[], context=None, num_ctx=200000, 
                      temperature=0.0, max_tokens=5000, num_gpu_layers=0):
@@ -18,7 +34,8 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
         
         model_name = os.environ.get("AH_OVERRIDE_LLM_MODEL", "deepseek-reasoner")
         
-        # Create streaming response using OpenAI compatibility layer
+        messages = [concat_text_lists(m) for m in messages]
+
         stream = await client.chat.completions.create(
             model=model_name,
             messages=messages,
