@@ -27,18 +27,24 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
         )
 
         print("Opened stream with model:", model_name)
-        
+        done_reasoning = False
         async def content_stream(original_stream):
             async for chunk in original_stream:
                 if os.environ.get('AH_DEBUG') == 'True':
                     print('\033[93m' + str(chunk) + '\033[0m', end='')
                     print('\033[92m' + str(chunk.choices[0].delta.content) + '\033[0m', end='')
-                yield chunk.choices[0].delta.content or ""
+                if chunk.choices[0].delta.reasoning_content:
+                    #yield chunk.choices[0].delta.reasoning_content
+                    print('\033[92m' + str(chunk.choices[0].delta.reasoning_content) + '\033[0m', end='')
+                else:
+                    if not done_reasoning:
+                        done_reasoning = True
+                    yield chunk.choices[0].delta.content or ""
 
         return content_stream(stream)
 
     except Exception as e:
-        print('Gemini (OpenAI mode) error:', e)
+        print('DeepSeek (OpenAI mode) error:', e)
         #raise
 
 @service()
