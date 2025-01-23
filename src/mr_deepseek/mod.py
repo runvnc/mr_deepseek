@@ -3,6 +3,7 @@ import os
 import base64
 from io import BytesIO
 from openai import AsyncOpenAI
+import json
 
 client = AsyncOpenAI(
     api_key=os.environ.get("DEEPSEEK_API_KEY"),
@@ -36,7 +37,7 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
                 #    #print('\033[93m' + str(chunk) + '\033[0m', end='')
                 #    #print('\033[92m' + str(chunk.choices[0].delta.content) + '\033[0m', end='')
                 if chunk.choices[0].delta.reasoning_content:
-                    yield chunk.choices[0].delta.reasoning_content
+                    yield json.dumps(chunk.choices[0].delta.reasoning_content)
                     print('\033[92m' + str(chunk.choices[0].delta.reasoning_content) + '\033[0m', end='')
                 elif chunk.choices[0].delta.content:
                     if not done_reasoning:
