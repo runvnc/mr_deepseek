@@ -33,7 +33,7 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
         print("DeepSeek stream_chat (OpenAI compatible mode)")
         
         model_name = os.environ.get("AH_OVERRIDE_LLM_MODEL", "deepseek-chat")
-        reasoning = false
+        reasoning = False
         # look at the last message and the one before that
         # if the role of both of them is the same
         # this is not valid
