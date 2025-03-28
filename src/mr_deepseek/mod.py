@@ -33,7 +33,7 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
         print("DeepSeek stream_chat (OpenAI compatible mode)")
         
         model_name = os.environ.get("AH_OVERRIDE_LLM_MODEL", "deepseek-chat")
-
+        reasoning = false
         # look at the last message and the one before that
         # if the role of both of them is the same
         # this is not valid
@@ -57,7 +57,8 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
 
         async def content_stream(original_stream):
             done_reasoning = False
-            yield '[{"reasoning": "'
+            if reasoning:
+                yield '[{"reasoning": "'
             async for chunk in original_stream:
                 #if os.environ.get('AH_DEBUG') == 'True':
                 #    #print('\033[93m' + str(chunk) + '\033[0m', end='')
@@ -71,7 +72,7 @@ async def stream_chat(model, messages=[], context=None, num_ctx=200000,
                     yield without_quotes
                     print('\033[92m' + str(chunk.choices[0].delta.reasoning_content) + '\033[0m', end='')
                 elif chunk.choices[0].delta.content:
-                    if not done_reasoning:
+                    if reasoning and not done_reasoning:
                         yield '"}] <<CUT_HERE>>'
                         done_reasoning = True
                     yield chunk.choices[0].delta.content or ""
