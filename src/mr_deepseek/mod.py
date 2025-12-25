@@ -1,5 +1,5 @@
-from mindroot.lib.providers.services import service_class
-from mindroot.lib.providers.protocols import LLM
+from mindroot.services import service_class
+from mindroot.protocols import LLM
 import os
 import base64
 from io import BytesIO
