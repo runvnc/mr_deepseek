@@ -51,7 +51,7 @@ class DeepSeekLLM(LLM):
             second_last_role = messages[-2]['role']
             if last_role == second_last_role:
                 messages = messages[:-1]
-
+            model_name = model
             messages = [concat_text_lists(m) for m in messages]
 
             stream = await client.chat.completions.create(
