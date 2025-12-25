@@ -43,7 +43,7 @@ class DeepSeekLLM(LLM):
     ) -> AsyncIterator[str]:
         try:
             print("DeepSeek stream_chat (OpenAI compatible mode)")
-            
+            print("model=",model,"messages=",messages)
             model_name = os.environ.get("AH_OVERRIDE_LLM_MODEL", "deepseek-chat")
             reasoning = False
             # look at the last message and the one before that
