@@ -42,9 +42,6 @@ class DeepSeekLLM(LLM):
         num_gpu_layers: int = 0
     ) -> AsyncIterator[str]:
         try:
-            print("DeepSeek stream_chat (OpenAI compatible mode)")
-            print("model=",model,"messages=",messages)
-            model_name = os.environ.get("AH_OVERRIDE_LLM_MODEL", "deepseek-chat")
             reasoning = False
             # look at the last message and the one before that
             # if the role of both of them is the same
@@ -58,7 +55,7 @@ class DeepSeekLLM(LLM):
             messages = [concat_text_lists(m) for m in messages]
 
             stream = await client.chat.completions.create(
-                model=model_name,
+                model=model,
                 messages=messages,
                 stream=True,
                 temperature=temperature,
